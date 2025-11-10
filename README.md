@@ -13,21 +13,31 @@ git clone https://github.com/google/computer-use-preview.git
 cd computer-use-preview
 ```
 
-**Set up Python Virtual Environment and Install Dependencies**
+**Set up Python Environment and Install Dependencies**
+
+Using [uv](https://docs.astral.sh/uv/) (recommended):
+
+```bash
+# Install uv if you haven't already
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install all dependencies (this will create a .venv automatically)
+uv sync
+
+# Install Playwright browser
+uv run playwright install chrome
+uv run playwright install-deps chrome
+```
+
+Alternatively, using traditional pip:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-```
+pip install .
 
-**Install Playwright and Browser Dependencies**
-
-```bash
-# Install system dependencies required by Playwright for Chrome
+# Install Playwright and Browser Dependencies
 playwright install-deps chrome
-
-# Install the Chrome browser for Playwright
 playwright install chrome
 ```
 
@@ -84,6 +94,12 @@ The primary way to use the tool is via the `main.py` script.
 
 **General Command Structure:**
 
+Using uv (recommended):
+```bash
+uv run python main.py --query "Go to Google and type 'Hello World' into the search bar"
+```
+
+Or if using traditional venv:
 ```bash
 python main.py --query "Go to Google and type 'Hello World' into the search bar"
 ```
@@ -100,13 +116,13 @@ You can specify a particular environment with the ```--env <environment>``` flag
 Runs the agent using a Chrome browser instance controlled locally by Playwright.
 
 ```bash
-python main.py --query="Go to Google and type 'Hello World' into the search bar" --env="playwright"
+uv run python main.py --query="Go to Google and type 'Hello World' into the search bar" --env="playwright"
 ```
 
 You can also specify an initial URL for the Playwright environment:
 
 ```bash
-python main.py --query="Go to Google and type 'Hello World' into the search bar" --env="playwright" --initial_url="https://www.google.com/search?q=latest+AI+news"
+uv run python main.py --query="Go to Google and type 'Hello World' into the search bar" --env="playwright" --initial_url="https://www.google.com/search?q=latest+AI+news"
 ```
 
 **Browserbase**
@@ -114,7 +130,7 @@ python main.py --query="Go to Google and type 'Hello World' into the search bar"
 Runs the agent using Browserbase as the browser backend. Ensure the proper Browserbase environment variables are set:`BROWSERBASE_API_KEY` and `BROWSERBASE_PROJECT_ID`.
 
 ```bash
-python main.py --query="Go to Google and type 'Hello World' into the search bar" --env="browserbase"
+uv run python main.py --query="Go to Google and type 'Hello World' into the search bar" --env="browserbase"
 ```
 
 ## Agent CLI
